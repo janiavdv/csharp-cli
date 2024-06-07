@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,8 +19,20 @@ class Program
         using (StreamReader reader = new StreamReader(path))
         {
 	        string json = reader.ReadToEnd();
-            jsonData = JsonSerializer.Deserialize<List<JSONBook>>(json);;
+            jsonData = JsonSerializer.Deserialize<List<JSONBook>>(json);
+            if (jsonData == null)
+                System.Environment.Exit(0);
             Console.WriteLine(jsonData.Count);
         }
+
+        List<Book> books = new List<Book>();
+        foreach (JSONBook rawData in jsonData)
+        {
+            Book book = new Book(rawData);
+            books.Add(book);
+        }
+        
+        // ensure all books were successfully converted
+        Debug.Assert(jsonData.Count == books.Count);
     }
 }
