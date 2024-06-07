@@ -1,5 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Text.Json;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace BookRecommender;
 
@@ -30,5 +33,13 @@ class Program
         
         // ensure all books were successfully converted
         Debug.Assert(jsonData.Count == books.Count);
+        
+        // Sets the connection URI
+        const string connectionUri = "mongodb://localhost:27017/";
+        // Creates a new client and connects to the server
+        var client = new MongoClient(connectionUri);
+        var db = client.GetDatabase("books");
+        var collection = db.GetCollection<Book>("books");
+        collection.InsertMany(books);
     }
 }
