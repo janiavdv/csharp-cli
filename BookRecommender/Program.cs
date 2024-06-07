@@ -1,9 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace BookRecommender;
 
