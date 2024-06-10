@@ -70,16 +70,34 @@ class Program
         var filter = Builders<Book>
             .Filter
             .Eq(column, search);
-        var bookFound = collection
+        
+        Console.WriteLine("How many results (at most) do you want?");
+        string countStr = Console.ReadLine();
+        int count = 0;
+        
+        try
+        {
+            count = Convert.ToInt32(countStr);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Invalid integer \"" + countStr + "\". Application quitting...");
+            Environment.Exit(0);
+        }
+        
+        var booksFound = collection
             .Find(filter)
-            .FirstOrDefault();
+            .Limit(count)
+            .ToList();
 
-        if (bookFound == null)
+        if (booksFound.Count == 0)
         {
             Console.WriteLine("No books found. Application quitting...");
             Environment.Exit(0);
         }
 
-        bookFound.PrintBook();
+        foreach (Book bookFound in booksFound)
+            bookFound.PrintBook();
+       
     }
 }
