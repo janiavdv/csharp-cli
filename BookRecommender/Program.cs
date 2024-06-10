@@ -18,7 +18,7 @@ class Program
 	        string json = reader.ReadToEnd();
             jsonData = JsonSerializer.Deserialize<List<JSONBook>>(json);
             if (jsonData == null)
-                System.Environment.Exit(0);
+                return;
         }
 
         List<Book> books = new List<Book>();
@@ -55,13 +55,13 @@ class Program
         if (column == "q")
         {
             Console.WriteLine("Application quitting...");
-            Environment.Exit(0);
+            return;
         }
 
         if (!options.Contains(column))
         {
             Console.WriteLine("\"" + column + "\" was not one of the specified options. Application quitting...");
-            Environment.Exit(0);
+            return;
         }
 
         Console.WriteLine("What " + column + " are you looking for?");
@@ -128,7 +128,7 @@ class Program
         catch (Exception e)
         {
             Console.WriteLine("Invalid integer \"" + countStr + "\". Application quitting...");
-            Environment.Exit(0);
+            return;
         }
         
         var booksFound = collection
@@ -139,7 +139,7 @@ class Program
         if (booksFound.Count == 0)
         {
             Console.WriteLine("No books found. Application quitting...");
-            Environment.Exit(0);
+            return;
         }
 
         foreach (Book bookFound in booksFound)
