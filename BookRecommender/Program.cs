@@ -41,9 +41,9 @@ class Program
         var db = client.GetDatabase("books");
         var collection = db.GetCollection<Book>("books");
         collection.InsertMany(books);
-
-        string? username = Console.ReadLine();
+        
         Console.WriteLine("Enter name: ");
+        string? username = Console.ReadLine();
         Console.WriteLine("Hi, " + username +
                           ". Welcome to the Book Recommender - how do you want to search for a book today?");
         Console.WriteLine("Choose from these options or use q to quit:");
