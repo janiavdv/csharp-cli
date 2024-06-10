@@ -90,6 +90,7 @@ public class Book
 
     public void PrintBook()
     {
+        Console.WriteLine();
         Console.WriteLine("Original Title: " + OriginalTitle);
         Console.WriteLine("Authors: " + string.Join(", ", Authors));
         Console.WriteLine("Original Publication Year: " + OriginalPublicationYear);
