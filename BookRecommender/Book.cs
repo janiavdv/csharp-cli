@@ -37,6 +37,8 @@ public class Book
     public string Title { get; set; }
     [BsonElement("Authors")]
     public List<string> Authors { get; set; }
+    
+    public bool Read { get; set; }
 
     public Book(JSONBook rawData)
     {
@@ -56,6 +58,7 @@ public class Book
         this.NumRatings = rawData.ratings_count;
         this.Title = rawData.title;
         this.Authors = ParseAuthors(rawData.authors);
+        this.Read = false;
     }
     
     private static List<string> ParseGenres(string genres)
