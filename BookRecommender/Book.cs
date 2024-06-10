@@ -80,11 +80,9 @@ public class Book
         // Split the string by commas and trim each author
         string[] authorArray = authors.Split(',', StringSplitOptions.RemoveEmptyEntries);
         for (int i = 0; i < authorArray.Length; i++)
-        {
             // Remove leading and trailing whitespace, and quotes
-            authorArray[i] = authorArray[i].Trim(' ', '"');
-        }
-    
+            authorArray[i] = authorArray[i].Trim(' ', '"', '\'');
+        
         return new List<string>(authorArray);
     }
 
