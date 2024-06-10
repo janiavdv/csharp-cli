@@ -73,21 +73,11 @@ class Program
         switch (column)
         {
             case "OriginalTitle":
-            {
-                filter = builder
-                    .Regex(column, new BsonRegularExpression(".*" + search + ".*"));
-                break;
-            }
             case "Authors":
-            {
-                filter = builder
-                    .Eq(column, search); //  TODO: add regex so user can search by only last name (eg)
-                break;
-            }
             case "Genres":
             {
                 filter = builder
-                    .Eq(column, search); // TODO: +1 above
+                    .Regex(column, new BsonRegularExpression(".*" + search + ".*"));
                 break;
             }
             case "OriginalPublicationYear":
