@@ -10,8 +10,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Application booted!"); 
-        
         const string path = "../../../data/books.json";
         List<JSONBook>? jsonData = new List<JSONBook>(); 
         
@@ -21,7 +19,6 @@ class Program
             jsonData = JsonSerializer.Deserialize<List<JSONBook>>(json);
             if (jsonData == null)
                 System.Environment.Exit(0);
-            Console.WriteLine(jsonData.Count);
         }
 
         List<Book> books = new List<Book>();
