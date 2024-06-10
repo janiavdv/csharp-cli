@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -11,11 +10,11 @@ class Program
     static void Main(string[] args)
     {
         const string path = "../../../data/books.json";
-        List<JSONBook>? jsonData = new List<JSONBook>(); 
-        
+        List<JSONBook>? jsonData = new List<JSONBook>();
+
         using (StreamReader reader = new StreamReader(path))
         {
-	        string json = reader.ReadToEnd();
+            string json = reader.ReadToEnd();
             jsonData = JsonSerializer.Deserialize<List<JSONBook>>(json);
             if (jsonData == null)
                 return;
@@ -27,10 +26,10 @@ class Program
             Book book = new Book(rawData);
             books.Add(book);
         }
-        
+
         // ensure all books were successfully converted
         Debug.Assert(jsonData.Count == books.Count);
-        
+
         // Sets the connection URI
         const string connectionUri = "mongodb://localhost:27017/";
         // Creates a new client and connects to the server
@@ -217,7 +216,7 @@ class Program
             }
 
             Book read = booksFound[pos];
-            
+
             var bookToUpdate = Builders<Book>
                 .Filter
                 .Eq(b => b.Title, read.Title);
@@ -234,7 +233,6 @@ class Program
             {
                 Console.WriteLine("No updates were made. The book was already marked as read or was not found.");
             }
-            
         }
     }
 }
