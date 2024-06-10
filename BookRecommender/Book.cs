@@ -94,4 +94,9 @@ public class Book
         Console.WriteLine("Original Publication Year: " + OriginalPublicationYear);
         Console.WriteLine("Description: " + Description);
     }
+
+    public void PrintBookOneLine()
+    {
+        Console.WriteLine(OriginalTitle + " (" + string.Join(", ", Authors) + "), " + OriginalPublicationYear);
+    }
 }
