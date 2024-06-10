@@ -67,14 +67,60 @@ class Program
         Console.WriteLine("What " + column + " are you looking for?");
         string search = Console.ReadLine();
 
-        var filter = Builders<Book>
-            .Filter
-            .Eq(column, search);
+        FilterDefinitionBuilder<Book> builder = Builders<Book>.Filter;
+        FilterDefinition<Book> filter;
+
+        switch (column)
+        {
+            case "OriginalTitle":
+            {
+                filter = builder
+                    .Regex(column, new BsonRegularExpression(".*" + search + ".*"));
+                break;
+            }
+            case "Authors":
+            {
+                filter = builder
+                    .Eq(column, search); //  TODO: add regex so user can search by only last name (eg)
+                break;
+            }
+            case "Genres":
+            {
+                filter = builder
+                    .Eq(column, search); // TODO: +1 above
+                break;
+            }
+            case "OriginalPublicationYear":
+            {
+                try
+                {
+                    int year = Convert.ToInt32(search);
+                    filter = builder
+                        .Eq(column, year);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Invalid year: \"" + search + "\". Application quitting...");
+                    return;
+                }
+                
+                break;
+            }
+            case "LanguageCode":
+            {
+                filter = builder
+                    .Eq(column, search);
+                break;
+            }
+            default:
+                // This block is never entered since we verify validity of column above.
+                return;
+        }
+
         
         Console.WriteLine("How many results (at most) do you want?");
         string countStr = Console.ReadLine();
         int count = 0;
-        
         try
         {
             count = Convert.ToInt32(countStr);
