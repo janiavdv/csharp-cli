@@ -41,5 +41,48 @@ class Program
         var db = client.GetDatabase("books");
         var collection = db.GetCollection<Book>("books");
         collection.InsertMany(books);
+
+        string? username = Console.ReadLine();
+        Console.WriteLine("Enter name: ");
+        Console.WriteLine("Hi, " + username +
+                          ". Welcome to the Book Recommender - how do you want to search for a book today?");
+        Console.WriteLine("Choose from these options or use q to quit:");
+
+        List<string> options = new List<string>
+            { "OriginalTitle", "Authors", "Genres", "OriginalPublicationYear", "LanguageCode" };
+        foreach (string option in options)
+            Console.WriteLine("- " + option);
+
+        string column = Console.ReadLine();
+
+        if (column == "q")
+        {
+            Console.WriteLine("Application quitting...");
+            Environment.Exit(0);
+        }
+
+        if (!options.Contains(column))
+        {
+            Console.WriteLine("\"" + column + "\" was not one of the specified options. Application quitting...");
+            Environment.Exit(0);
+        }
+
+        Console.WriteLine("What " + column + " are you looking for?");
+        string search = Console.ReadLine();
+
+        var filter = Builders<Book>
+            .Filter
+            .Eq(column, search);
+        var bookFound = collection
+            .Find(filter)
+            .FirstOrDefault();
+
+        if (bookFound == null)
+        {
+            Console.WriteLine("No books found. Application quitting...");
+            Environment.Exit(0);
+        }
+
+        bookFound.PrintBook();
     }
 }

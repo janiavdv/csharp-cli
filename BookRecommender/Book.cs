@@ -2,6 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace BookRecommender;
 
+[BsonIgnoreExtraElements]
 public class Book
 {
     [BsonElement("AverageRating")]
@@ -85,5 +86,13 @@ public class Book
         }
     
         return new List<string>(authorArray);
+    }
+
+    public void PrintBook()
+    {
+        Console.WriteLine("Original Title: " + OriginalTitle);
+        Console.WriteLine("Authors: " + string.Join(", ", Authors));
+        Console.WriteLine("Original Publication Year: " + OriginalPublicationYear);
+        Console.WriteLine("Description: " + Description);
     }
 }
