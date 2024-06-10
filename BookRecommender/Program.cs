@@ -9,38 +9,54 @@ class Program
 {
     static void Main(string[] args)
     {
-        const string path = "../../../data/books.json";
-        List<JSONBook>? jsonData = new List<JSONBook>();
-
-        using (StreamReader reader = new StreamReader(path))
+        Console.WriteLine("Enter name: ");
+        string? username = Console.ReadLine();
+        Console.WriteLine("Hi, " + username + ". Welcome to the Book Recommender.");
+        Console.WriteLine("Do you want to reset the database? ('y' or 'n')");
+        string resetStr = Console.ReadLine();
+        if (resetStr != "y" && resetStr != "n")
         {
-            string json = reader.ReadToEnd();
-            jsonData = JsonSerializer.Deserialize<List<JSONBook>>(json);
-            if (jsonData == null)
-                return;
+            Console.WriteLine("\""+ resetStr + "\" was not one of the choices. Application quitting...");
+            return; 
         }
 
-        List<Book> books = new List<Book>();
-        foreach (JSONBook rawData in jsonData)
-        {
-            Book book = new Book(rawData);
-            books.Add(book);
-        }
-
-        // ensure all books were successfully converted
-        Debug.Assert(jsonData.Count == books.Count);
-
+        bool reset = resetStr == "y";
+        
         // Sets the connection URI
         const string connectionUri = "mongodb://localhost:27017/";
         // Creates a new client and connects to the server
         var client = new MongoClient(connectionUri);
         var db = client.GetDatabase("books");
         var collection = db.GetCollection<Book>("books");
-        collection.InsertMany(books);
 
-        Console.WriteLine("Enter name: ");
-        string? username = Console.ReadLine();
-        Console.WriteLine("Hi, " + username + ". Welcome to the Book Recommender.");
+        if (collection.EstimatedDocumentCount() != 10000)
+        {
+            if (reset || collection.EstimatedDocumentCount() > 10000)
+                // Delete all documents in the database
+                collection.DeleteMany(Builders<Book>.Filter.Empty);
+            
+            const string path = "../../../data/books.json";
+            List<JSONBook>? jsonData;
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string json = reader.ReadToEnd();
+                jsonData = JsonSerializer.Deserialize<List<JSONBook>>(json);
+            }
+
+            List<Book> books = new List<Book>();
+            foreach (JSONBook rawData in jsonData)
+            {
+                Book book = new Book(rawData);
+                books.Add(book);
+            }
+
+            // ensure all books were successfully converted
+            Debug.Assert(jsonData.Count == books.Count);
+        
+            collection.InsertMany(books);
+        }
+        
         Console.WriteLine("Do you want to find a book ('f') or update your read books ('u')?");
         string action = Console.ReadLine();
         if (action != "f" && action != "u")
