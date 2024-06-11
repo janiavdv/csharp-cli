@@ -138,8 +138,10 @@ class Program
                     }
                     
                     Debug.Assert(filter != null);
+                    FilterDefinition<Book> excludeReadFilter = builder
+                        .Eq("Read", false);
                     var booksFound = collection
-                        .Find(filter)
+                        .Find(filter & excludeReadFilter)
                         .Limit(count)
                         .ToList();
 
@@ -173,14 +175,16 @@ class Program
                     Console.WriteLine($"What {column} are you looking for? Be as specific as possible.");
                     string search = Console.ReadLine();
 
-                    FilterDefinition<Book> filter = Builders<Book>
-                        .Filter
+                    FilterDefinitionBuilder<Book> builder = Builders<Book>.Filter;
+                    FilterDefinition<Book> filter = builder
                         .Regex(column, new BsonRegularExpression($".*{search}.*"));
+                    FilterDefinition<Book> excludeReadFilter = builder
+                        .Eq("Read", false);
 
                     int count = 10;
-
+                    
                     var booksFound = collection
-                        .Find(filter)
+                        .Find(filter & excludeReadFilter)
                         .Limit(count)
                         .ToList();
                     int n = booksFound.Count;
