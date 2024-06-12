@@ -1,6 +1,6 @@
 # C# Command Line Book Recommender
 
-A brief command line app I built to learn C# and the [MongoDB C# Driver](https://www.mongodb.com/docs/drivers/csharp/current/). This project is adapted from [Book Recommender](https://github.com/janiavdv/book-recommender), a similar project with more of a data science flavor which has a [web app](janiavdv.shinyapps.io/book_recommender/) to accompany it. 
+A brief command line app I built to learn C# and the [MongoDB C# Driver](https://www.mongodb.com/docs/drivers/csharp/current/). This project is adapted from [Book Recommender](https://github.com/janiavdv/book-recommender), a similar project with more of a data science flavor which has a [web app](https://janiavdv.shinyapps.io/book_recommender/) to accompany it. 
 
 ## Use
 
